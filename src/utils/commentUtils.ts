@@ -53,7 +53,7 @@ export const mockUsers: User[] = [
 export const mockComments: Comment[] = [
   {
     id: '1',
-    content: 'This content is so insightful! I've been following your work for years and always learn something new.',
+    content: "This content is so insightful! I've been following your work for years and always learn something new.",
     timestamp: '2023-11-15T14:32:00Z',
     user: mockUsers[0],
     likes: 24,
@@ -89,7 +89,7 @@ export const mockComments: Comment[] = [
   },
   {
     id: '4',
-    content: 'This is garbage content. You clearly don't know what you're talking about!',
+    content: "This is garbage content. You clearly don't know what you're talking about!",
     timestamp: '2023-11-16T10:30:00Z',
     user: mockUsers[3],
     likes: 1,
@@ -101,7 +101,7 @@ export const mockComments: Comment[] = [
   },
   {
     id: '5',
-    content: 'I've implemented your suggestions and they've helped my business grow by 30%! Thank you so much.',
+    content: "I've implemented your suggestions and they've helped my business grow by 30%! Thank you so much.",
     timestamp: '2023-11-17T11:22:00Z',
     user: mockUsers[4],
     likes: 32,
@@ -113,7 +113,7 @@ export const mockComments: Comment[] = [
   },
   {
     id: '6',
-    content: 'When is your next video coming out? I\'ve been checking daily!',
+    content: "When is your next video coming out? I've been checking daily!",
     timestamp: '2023-11-17T12:35:00Z',
     user: mockUsers[0],
     likes: 8,
