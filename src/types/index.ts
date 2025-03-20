@@ -20,6 +20,16 @@ export interface Comment {
   sentiment: 'positive' | 'neutral' | 'negative';
   relevanceScore: number;
   tags: string[];
+  platform?: SocialPlatform;
 }
 
 export type CommentFilter = 'all' | 'important' | 'reward-eligible' | 'flagged';
+
+export type SocialPlatform = 'youtube' | 'instagram' | 'facebook' | 'linkedin' | 'twitter' | 'all';
+
+export interface SocialProfile {
+  platform: SocialPlatform;
+  username: string;
+  url: string;
+  isConnected: boolean;
+}

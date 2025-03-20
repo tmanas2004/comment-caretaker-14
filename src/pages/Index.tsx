@@ -3,22 +3,27 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import FilterPanel from '@/components/FilterPanel';
 import CommentList from '@/components/CommentList';
-import { mockComments, filterComments, sortCommentsByRelevance } from '@/utils/commentUtils';
-import { CommentFilter } from '@/types';
+import SocialPlatformSelector from '@/components/SocialPlatformSelector';
+import { mockComments, filterComments, sortCommentsByRelevance, filterCommentsByPlatform } from '@/utils/commentUtils';
+import { CommentFilter, SocialPlatform } from '@/types';
 
 const Index = () => {
   const [filter, setFilter] = useState<CommentFilter>('all');
+  const [platform, setPlatform] = useState<SocialPlatform>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [filteredComments, setFilteredComments] = useState(mockComments);
   
+  // Get platform-filtered comments for count calculation
+  const platformFilteredComments = filterCommentsByPlatform(mockComments, platform);
+  
   // Filter counts for display
   const counts = {
-    all: mockComments.length,
-    important: mockComments.filter(c => c.isImportant).length,
-    rewardEligible: mockComments.filter(c => 
+    all: platformFilteredComments.length,
+    important: platformFilteredComments.filter(c => c.isImportant).length,
+    rewardEligible: platformFilteredComments.filter(c => 
       c.user.isLoyalFollower && c.likes > 10 && c.sentiment === 'positive'
     ).length,
-    flagged: mockComments.filter(c => c.isPotentiallyHarmful).length
+    flagged: platformFilteredComments.filter(c => c.isPotentiallyHarmful).length
   };
   
   // Simulate loading data
@@ -30,23 +35,27 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  // Filter comments when filter changes
+  // Filter comments when filter or platform changes
   useEffect(() => {
     setIsLoading(true);
     
     // Simulate API call delay
     const timer = setTimeout(() => {
-      const filtered = filterComments(mockComments, filter);
+      const filtered = filterComments(mockComments, filter, platform);
       const sorted = sortCommentsByRelevance(filtered);
       setFilteredComments(sorted);
       setIsLoading(false);
     }, 800);
     
     return () => clearTimeout(timer);
-  }, [filter]);
+  }, [filter, platform]);
   
   const handleFilterChange = (newFilter: CommentFilter) => {
     setFilter(newFilter);
+  };
+  
+  const handlePlatformChange = (newPlatform: SocialPlatform) => {
+    setPlatform(newPlatform);
   };
   
   return (
@@ -57,9 +66,14 @@ const Index = () => {
         <div className="mb-8 animate-fade-in">
           <h1 className="text-4xl font-light tracking-tight mb-2">Comment Management</h1>
           <p className="text-muted-foreground">
-            AI-powered system to monitor, analyze, and prioritize your audience's comments.
+            AI-powered system to monitor, analyze, and prioritize your audience's comments across social platforms.
           </p>
         </div>
+        
+        <SocialPlatformSelector
+          activePlatform={platform}
+          onPlatformChange={handlePlatformChange}
+        />
         
         <FilterPanel
           activeFilter={filter}

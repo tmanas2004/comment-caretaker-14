@@ -7,12 +7,18 @@ import {
   Star,
   BadgeCheck,
   Flag,
-  CornerDownRight
+  CornerDownRight,
+  Youtube,
+  Instagram,
+  Facebook,
+  Twitter,
+  Linkedin
 } from 'lucide-react';
-import { Comment } from '@/types';
+import { Comment, SocialPlatform } from '@/types';
 import { 
   formatDate, 
-  getSentimentColor 
+  getSentimentColor,
+  getPlatformColor
 } from '@/utils/commentUtils';
 import { 
   Card, 
@@ -32,6 +38,23 @@ interface CommentCardProps {
 }
 
 const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
+  const getPlatformIcon = (platform?: SocialPlatform) => {
+    switch (platform) {
+      case 'youtube':
+        return <Youtube size={16} className="text-red-600" />;
+      case 'instagram':
+        return <Instagram size={16} className="text-pink-600" />;
+      case 'facebook':
+        return <Facebook size={16} className="text-blue-600" />;
+      case 'twitter':
+        return <Twitter size={16} className="text-sky-500" />;
+      case 'linkedin':
+        return <Linkedin size={16} className="text-blue-700" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Card className="mb-4 overflow-hidden transition-all duration-300 hover:shadow-md animate-slide-in glass-card">
       <CardContent className="p-4">
@@ -66,6 +89,25 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Verified User</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              
+              {comment.platform && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge 
+                        variant="outline" 
+                        className={`ml-2 flex items-center gap-1 ${getPlatformColor(comment.platform)}`}
+                      >
+                        {getPlatformIcon(comment.platform)}
+                        <span className="text-xs capitalize">{comment.platform}</span>
+                      </Badge>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Comment from {comment.platform}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
